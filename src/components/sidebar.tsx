@@ -18,9 +18,9 @@ const drawerWidth: number = 240;
 
 const SideBar = () => {
   const sideBarItems: Array<{ text: string; icon: JSX.Element; path: string }> =
-    [{ text: "Inventory", icon: <InventoryIcon />, path: "../app/inventory/page" }];
+    [{ text: "Inventory", icon: <InventoryIcon />, path: "/inventory" }];
   return (
-    <Box className="flex">
+    <Box className="">
       <CssBaseline />
       <Drawer
         variant="permanent"
