@@ -13,14 +13,18 @@ import {
 import InventoryIcon from "@mui/icons-material/Inventory";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const drawerWidth: number = 240;
 
 const SideBar = () => {
   const sideBarItems: Array<{ text: string; icon: JSX.Element; path: string }> =
     [{ text: "Inventory", icon: <InventoryIcon />, path: "/inventory" }];
+
+  const pathname = usePathname();
+
   return (
-    <Box className="">
+    <Box>
       <CssBaseline />
       <Drawer
         variant="permanent"
@@ -45,10 +49,10 @@ const SideBar = () => {
         <List>
           {sideBarItems.map((item) => (
             <Link href={item.path}>
-              <ListItem key={item.text} >
+              <ListItem key={item.text}>
                 <ListItemButton>
                   <ListItemIcon>{item.icon}</ListItemIcon>
-                  <ListItemText primary={item.text}/>
+                  <ListItemText primary={item.text} />
                 </ListItemButton>
               </ListItem>
             </Link>
