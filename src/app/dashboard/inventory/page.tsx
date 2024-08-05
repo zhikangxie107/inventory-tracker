@@ -6,6 +6,8 @@ import {
   TextField,
   InputAdornment,
   Button,
+  Modal,
+  Typography,
 } from "@mui/material";
 import GridViewIcon from "@mui/icons-material/GridView";
 import ListIcon from "@mui/icons-material/List";
@@ -16,6 +18,7 @@ import InventoryList from "@/components/inventoryList";
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { firestore } from "@/backend/firebase";
 import InventoryGrid from "@/components/inventoryGrid";
+import AddBoxMenu from "@/components/addBoxMenu";
 
 interface InventoryItem {
   id: string;
@@ -45,7 +48,7 @@ const Inventory = () => {
   };
 
   //handles modal functions
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -64,7 +67,7 @@ const Inventory = () => {
         // Create an item object including the document ID
         const item: InventoryItem = {
           ...data,
-          id: doc.id
+          id: doc.id,
         };
 
         itemsArry.push(item);
@@ -112,19 +115,28 @@ const Inventory = () => {
           onChange={handleFindChange}
           className="min-w-80"
         />
-        <Button variant="contained" size="small" startIcon={<AddIcon />} onClick={handleOpen}>
+        <Button
+          variant="contained"
+          size="small"
+          startIcon={<AddIcon />}
+          onClick={handleOpen}
+        >
           Add Box
         </Button>
       </Box>
 
       {/* Add Box Menu */}
-      
+      <Modal open={open} onClose={handleClose} className="flex justify-center items-center">
+        <AddBoxMenu/>
+      </Modal>
 
       {/* Inventory view */}
       <Box className="p-4">
-        {
-          view == "list" ? <InventoryList items={items} /> : <InventoryGrid items={items}/>
-        }
+        {view == "list" ? (
+          <InventoryList items={items} />
+        ) : (
+          <InventoryGrid items={items} />
+        )}
       </Box>
     </Box>
   );
