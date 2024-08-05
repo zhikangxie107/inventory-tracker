@@ -20,6 +20,22 @@ import { firestore } from "@/backend/firebase";
 import InventoryGrid from "@/components/inventoryGrid";
 import AddBoxMenu from "@/components/addBoxMenu";
 
+export const useAddBoxModalState = () => {
+  const [open, setOpen] = useState<boolean>(true);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => {
+    console.log("Closing modal");
+    setOpen(false);
+  };
+
+  return {
+    open,
+    setOpen,
+    handleOpen,
+    handleClose,
+  };
+};
+
 interface InventoryItem {
   id: string;
   name: string;
@@ -48,9 +64,7 @@ const Inventory = () => {
   };
 
   //handles modal functions
-  const [open, setOpen] = useState(true);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const { open, handleOpen, handleClose } = useAddBoxModalState();
 
   const [items, setItems] = useState<InventoryItem[]>([]);
 
@@ -126,8 +140,12 @@ const Inventory = () => {
       </Box>
 
       {/* Add Box Menu */}
-      <Modal open={open} onClose={handleClose} className="flex justify-center items-center">
-        <AddBoxMenu/>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        className="flex justify-center items-center"
+      >
+        <AddBoxMenu />
       </Modal>
 
       {/* Inventory view */}
