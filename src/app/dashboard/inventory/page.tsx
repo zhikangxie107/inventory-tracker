@@ -15,6 +15,7 @@ import AddIcon from "@mui/icons-material/Add";
 import InventoryList from "@/components/inventoryList";
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { firestore } from "@/backend/firebase";
+import InventoryGrid from "@/components/inventoryGrid";
 
 interface InventoryItem {
   id: string;
@@ -43,6 +44,11 @@ const Inventory = () => {
     setFindField(event.target.value);
   };
 
+  //handles modal functions
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const [items, setItems] = useState<InventoryItem[]>([]);
 
   // read items from database
@@ -58,6 +64,7 @@ const Inventory = () => {
         // Create an item object including the document ID
         const item: InventoryItem = {
           ...data,
+          id: doc.id
         };
 
         itemsArry.push(item);
@@ -81,7 +88,7 @@ const Inventory = () => {
           <ToggleButton value="list" color="primary">
             <ListIcon />
           </ToggleButton>
-          <ToggleButton value="grid" color="primary">
+          <ToggleButton value="grid" color="primary" disabled>
             <GridViewIcon />
           </ToggleButton>
         </ToggleButtonGroup>
@@ -105,14 +112,19 @@ const Inventory = () => {
           onChange={handleFindChange}
           className="min-w-80"
         />
-        <Button variant="contained" size="small" startIcon={<AddIcon />}>
+        <Button variant="contained" size="small" startIcon={<AddIcon />} onClick={handleOpen}>
           Add Box
         </Button>
       </Box>
 
+      {/* Add Box Menu */}
+      
+
       {/* Inventory view */}
       <Box className="p-4">
-        <InventoryList items={items} />
+        {
+          view == "list" ? <InventoryList items={items} /> : <InventoryGrid items={items}/>
+        }
       </Box>
     </Box>
   );

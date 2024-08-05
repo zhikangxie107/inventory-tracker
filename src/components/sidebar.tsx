@@ -19,7 +19,7 @@ const drawerWidth: number = 240;
 
 const SideBar = () => {
   const sideBarItems: Array<{ text: string; icon: JSX.Element; path: string }> =
-    [{ text: "Inventory", icon: <InventoryIcon />, path: "/inventory" }];
+    [{ text: "Inventory", icon: <InventoryIcon />, path: "/dashboard/inventory" }];
 
   const pathname = usePathname();
 
