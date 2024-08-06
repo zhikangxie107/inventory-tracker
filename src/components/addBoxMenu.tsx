@@ -3,7 +3,7 @@ import { Box, Divider, TextField, IconButton } from "@mui/material";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
-import { firestore } from "@/backend/firebase";
+import { auth, firestore } from "@/backend/firebase";
 import { addDoc, collection } from "firebase/firestore";
 import { useAddBoxModalState } from "@/app/dashboard/inventory/page";
 
@@ -17,10 +17,10 @@ const AddBoxMenu = () => {
   // add item to database
 
   const addItem = async () => {
-    if (name != "" && category != "") {
+    const user = auth.currentUser;
+    if (name != "" && category != "" && user) {
       // get collection
-      const reference = collection(firestore, "inventory");
-
+      const reference = collection(firestore, "user", user.uid, "inventory");
 
       await addDoc(reference, {
         name: name.trim(),

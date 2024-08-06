@@ -16,9 +16,10 @@ import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
 import InventoryList from "@/components/inventoryList";
 import { collection, onSnapshot, query } from "firebase/firestore";
-import { firestore } from "@/backend/firebase";
+import { auth, firestore } from "@/backend/firebase";
 import InventoryGrid from "@/components/inventoryGrid";
 import AddBoxMenu from "@/components/addBoxMenu";
+import { onAuthStateChanged } from "firebase/auth";
 
 export const useAddBoxModalState = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -43,6 +44,7 @@ interface InventoryItem {
   quantity: number;
   [key: string]: any;
 }
+
 const Inventory = () => {
   // state for switching between grid / list
   const [view, setView] = useState<string | null>("list");
@@ -70,25 +72,32 @@ const Inventory = () => {
 
   // read items from database
   useEffect(() => {
-    const q = query(collection(firestore, "inventory"));
-    const snapshot = onSnapshot(q, (querySnapshot) => {
-      let itemsArry: InventoryItem[] = [];
+    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const q = query(collection(firestore, "user", user.uid, "inventory"));
+        const unsubscribeSnapshot = onSnapshot(q, (querySnapshot) => {
+          const itemsArry: InventoryItem[] = [];
 
-      querySnapshot.forEach((doc) => {
-        // Assert that doc.data() is of type InventoryItem
-        const data = doc.data() as InventoryItem;
+          querySnapshot.forEach((doc) => {
+            const data = doc.data() as InventoryItem;
+            const item: InventoryItem = {
+              ...data,
+              id: doc.id,
+            };
 
-        // Create an item object including the document ID
-        const item: InventoryItem = {
-          ...data,
-          id: doc.id,
-        };
+            itemsArry.push(item);
+          });
 
-        itemsArry.push(item);
-      });
-      setItems(itemsArry);
+          setItems(itemsArry);
+        });
+
+        // Clean up the snapshot listener when the component unmounts
+        return () => unsubscribeSnapshot();
+      }
     });
-    return () => snapshot();
+
+    // Clean up the auth listener when the component unmounts
+    return () => unsubscribeAuth();
   }, []);
 
   return (

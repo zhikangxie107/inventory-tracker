@@ -4,8 +4,8 @@ import GoogleIcon from "@mui/icons-material/Google";
 import Link from "next/link";
 
 import { auth } from "@/backend/firebase";
-import { useState } from "react";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { useEffect, useState } from "react";
+import { createUserWithEmailAndPassword, onAuthStateChanged, updateProfile } from "firebase/auth";
 import { useRouter } from "next/navigation";
 
 const SignUp = () => {
@@ -35,6 +35,21 @@ const SignUp = () => {
       setError(true);
     }
   };
+
+  useEffect(() => {
+    const checkLogin = () => {
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        if (user) {
+          router.push("/dashboard/inventory");
+        }
+      });
+
+      // Clean up the subscription on component unmount
+      return () => unsubscribe();
+    };
+
+    checkLogin();
+  }, [router]); // Include router in the dependency array if necessary
 
   return (
     <Box className="flex justify-center items-center min-h-screen bg-gray-100">

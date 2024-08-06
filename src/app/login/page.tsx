@@ -2,18 +2,23 @@
 import { Box, Button, Divider, TextField } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
+  onAuthStateChanged,
   signInWithCredential,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "@/backend/firebase";
+import { useRouter } from "next/navigation";
+import { unsubscribe } from "diagnostics_channel";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
   const [errorMessage, setError] = useState<boolean>(false);
+
+  const router = useRouter();
 
   const login = async () => {
     try {
@@ -22,6 +27,22 @@ const Login = () => {
       setError(true);
     }
   };
+
+  useEffect(() => {
+    const checkLogin = () => {
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        if (user) {
+          router.push("/dashboard/inventory");
+        }
+      });
+
+      // Clean up the subscription on component unmount
+      return () => unsubscribe();
+    };
+
+    checkLogin();
+  }, [router]); // Include router in the dependency array if necessary
+
   return (
     <Box className="flex justify-center items-center min-h-screen bg-gray-100">
       <Box className="p-5 w-1/2 h-1/2 max-w-lg  bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg ">
@@ -67,7 +88,9 @@ const Login = () => {
 
           {/* Submit Button */}
           <Box className="flex justify-center items-center">
-            <Button variant="outlined" onClick={login}>Login</Button>
+            <Button variant="outlined" onClick={login}>
+              Login
+            </Button>
           </Box>
         </Box>
 
@@ -75,7 +98,7 @@ const Login = () => {
         <Box className="pt-4 flex items-center justify-center">
           <Link href="/signup">
             <Button className="text-black" size="small">
-              Don't have an account? Sign Up
+              Don&apos;t have an account? Sign Up
             </Button>
           </Link>
         </Box>
