@@ -1,10 +1,10 @@
 "use client";
+import LandingPage from "@/components/landingPage";
 import "./globals.css";
-import { Box, Typography } from "@mui/material";
+
 
 export default function Home() {
-  return <Box className="flex">
-
-  </Box>;
+  return (
+    <LandingPage/>
+  );
 }
-

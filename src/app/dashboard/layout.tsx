@@ -9,7 +9,7 @@ export default function InventoryLayout({
   children: React.ReactNode;
 }) {
   return (
-    <section>
+    <section className="">
       <Box className="flex">
         <SideBar />
         <SelectedProvider>{children}</SelectedProvider>
