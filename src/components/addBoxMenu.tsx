@@ -10,8 +10,8 @@ import { useAddBoxModalState } from "@/app/dashboard/inventory/page";
 const AddBoxMenu = () => {
   const [name, setName] = useState<String>("");
   const [category, setCategory] = useState<String>("");
-  const [quantity, setQuantity] = useState<Number>(0);
-  const [price, setPrice] = useState<Number>(0);
+  const [quantity, setQuantity] = useState<number>();
+  const [price, setPrice] = useState<number>();
 
   const { handleClose } = useAddBoxModalState();
   // add item to database
@@ -21,11 +21,12 @@ const AddBoxMenu = () => {
       // get collection
       const reference = collection(firestore, "inventory");
 
+
       await addDoc(reference, {
-        name: name,
+        name: name.trim(),
         category: category,
         quantity: quantity,
-        price: price,
+        price: price?.toFixed(2),
       });
 
       setName("");
@@ -76,7 +77,10 @@ const AddBoxMenu = () => {
             className="w-80"
             type="number"
             value={price}
-            onChange={(event: any) => setPrice(event.target.value)}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                // Convert the input value to a number
+                setPrice(parseFloat(event.target.value));
+              }}
           />
         </Box>
 

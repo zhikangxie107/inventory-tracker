@@ -2,17 +2,18 @@ import { Toolbar, Typography } from "@mui/material";
 import { alpha } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
 import DeleteIcon from "@mui/icons-material/Delete";
-import FilterListIcon from "@mui/icons-material/FilterList";
+import { useDeleteItem } from "@/backend/deleteItem";
+
+
+
 interface EnhancedTableToolbarProps {
   numSelected: number;
 }
 
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   const { numSelected } = props;
-
+  const { handleDelete } = useDeleteItem();
   return (
     <Toolbar
       sx={{
@@ -48,7 +49,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       )}
       {numSelected > 0 ? (
         <Tooltip title="Delete">
-          <IconButton>
+          <IconButton onClick={handleDelete}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>

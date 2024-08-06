@@ -21,7 +21,7 @@ import InventoryGrid from "@/components/inventoryGrid";
 import AddBoxMenu from "@/components/addBoxMenu";
 
 export const useAddBoxModalState = () => {
-  const [open, setOpen] = useState<boolean>(true);
+  const [open, setOpen] = useState<boolean>(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     console.log("Closing modal");

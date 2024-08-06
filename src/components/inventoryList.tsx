@@ -2,7 +2,6 @@
 import { Box } from "@mui/material";
 import { firestore } from "@/backend/firebase";
 import { useEffect, useMemo, useState } from "react";
-import { alpha } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -17,6 +16,8 @@ import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import EnhancedTableToolbar from "./enhancedTableToolBar";
 import { visuallyHidden } from "@mui/utils";
+import { deleteDoc, doc } from "firebase/firestore";
+import { useSelected } from "@/context/selectedContext";
 
 interface InventoryItem {
   id: string;
@@ -175,7 +176,7 @@ interface InventoryListProps {
 const InventoryList: React.FC<InventoryListProps> = ({ items }) => {
   const [order, setOrder] = useState<Order>("asc");
   const [orderBy, setOrderBy] = useState<keyof InventoryItem>("category");
-  const [selected, setSelected] = useState<string[]>([]);
+  const {selected, setSelected} = useSelected()
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);

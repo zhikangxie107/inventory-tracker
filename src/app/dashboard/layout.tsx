@@ -1,4 +1,6 @@
+"use client";
 import SideBar from "@/components/sidebar";
+import { SelectedProvider } from "@/context/selectedContext";
 import { Box } from "@mui/material";
 
 export default function InventoryLayout({
@@ -10,7 +12,7 @@ export default function InventoryLayout({
     <section>
       <Box className="flex">
         <SideBar />
-        {children}
+        <SelectedProvider>{children}</SelectedProvider>
       </Box>
     </section>
   );
