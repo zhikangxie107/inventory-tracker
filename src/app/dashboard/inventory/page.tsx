@@ -21,21 +21,6 @@ import InventoryGrid from "@/components/inventoryGrid";
 import AddBoxMenu from "@/components/addBoxMenu";
 import { onAuthStateChanged } from "firebase/auth";
 
-export const useAddBoxModalState = () => {
-  const [open, setOpen] = useState<boolean>(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => {
-    console.log("Closing modal");
-    setOpen(false);
-  };
-
-  return {
-    open,
-    setOpen,
-    handleOpen,
-    handleClose,
-  };
-};
 
 interface InventoryItem {
   id: string;
@@ -66,7 +51,12 @@ const Inventory = () => {
   };
 
   //handles modal functions
-  const { open, handleOpen, handleClose } = useAddBoxModalState();
+  const [open, setOpen] = useState<boolean>(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => {
+    console.log("Closing modal");
+    setOpen(false);
+  };
 
   const [items, setItems] = useState<InventoryItem[]>([]);
 

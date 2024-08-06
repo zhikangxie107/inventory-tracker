@@ -5,7 +5,6 @@ import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
 import { auth, firestore } from "@/backend/firebase";
 import { addDoc, collection } from "firebase/firestore";
-import { useAddBoxModalState } from "@/app/dashboard/inventory/page";
 
 const AddBoxMenu = () => {
   const [name, setName] = useState<String>("");
@@ -13,7 +12,6 @@ const AddBoxMenu = () => {
   const [quantity, setQuantity] = useState<number>();
   const [price, setPrice] = useState<number>();
 
-  const { handleClose } = useAddBoxModalState();
   // add item to database
 
   const addItem = async () => {
@@ -78,9 +76,9 @@ const AddBoxMenu = () => {
             type="number"
             value={price}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                // Convert the input value to a number
-                setPrice(parseFloat(event.target.value));
-              }}
+              // Convert the input value to a number
+              setPrice(parseFloat(event.target.value));
+            }}
           />
         </Box>
 
@@ -90,7 +88,6 @@ const AddBoxMenu = () => {
             size="large"
             onClick={() => {
               addItem();
-              handleClose();
             }}
           >
             <AddIcon />

@@ -263,13 +263,13 @@ const InventoryList: React.FC<InventoryListProps> = ({ items }) => {
           />
           <TableBody>
             {visibleRows.map((item, index) => {
-              const isItemSelected = isSelected(item.id);
+              const isItemSelected = isSelected(String(item.id));
               const labelId = `enhanced-table-checkbox-${index}`;
 
               return (
                 <TableRow
                   hover
-                  onClick={(event) => handleClick(event, item.id)}
+                  onClick={(event) => handleClick(event, String(item.id))}
                   role="checkbox"
                   aria-checked={isItemSelected}
                   tabIndex={-1}
